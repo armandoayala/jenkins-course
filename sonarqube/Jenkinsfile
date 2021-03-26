@@ -1,5 +1,5 @@
 node {
-    def sonarserver = https://vps-1948771-x.dattaweb.com/
+    def sonarServer = "https://vps-1948771-x.dattaweb.com/"
     def myGradleContainer = docker.image('gradle:jdk8-alpine')
     myGradleContainer.pull()
 
@@ -16,7 +16,7 @@ node {
     stage('sonar-scanner') {
       def sonarqubeScannerHome = tool name: 'sonar', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
       withCredentials([string(credentialsId: 'sonar', variable: 'sonarLogin')]) {
-        sh "${sonarqubeScannerHome}/bin/sonar-scanner -e -Dsonar.host.url=sonarserver -Dsonar.login=${sonarLogin} -Dsonar.projectName=gs-gradle -Dsonar.projectVersion=${env.BUILD_NUMBER} -Dsonar.projectKey=GS -Dsonar.sources=complete/src/main/ -Dsonar.tests=complete/src/test/ -Dsonar.language=java -Dsonar.java.binaries=."
+        sh "${sonarqubeScannerHome}/bin/sonar-scanner -e -Dsonar.host.url=${sonarServer} -Dsonar.login=${sonarLogin} -Dsonar.projectName=gs-gradle -Dsonar.projectVersion=${env.BUILD_NUMBER} -Dsonar.projectKey=GS -Dsonar.sources=complete/src/main/ -Dsonar.tests=complete/src/test/ -Dsonar.language=java -Dsonar.java.binaries=."
       }
     }
 }
